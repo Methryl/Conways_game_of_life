@@ -1,27 +1,32 @@
 import pygame
 import elements
+import time
+from colors import Colors
 pygame.init()
 
 screen = pygame.display.set_mode([800, 800])
 
 board = elements.Board(8)
-print(board.map[3][3].state)
+board.map[3][3].alive=True
 running = True
-while running:
 
-    # Handle exit
+def draw():
+    screen.fill((255, 255, 255))
+    for y in range(board.cell_amount):
+        for x in range(board.cell_amount):
+            pygame.draw.rect(screen,Colors.gray,pygame.Rect(x*8,y*8,8,8),1)
+            if board.map[x][y].alive == True:
+                pygame.draw.rect(screen,Colors.black,pygame.Rect(x*8,y*8,8,8))
+    
+
+while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     
-    # Fill the background with white
-    screen.fill((255, 255, 255))
-    for y in range(200):
-        for x in range(200):
-            pygame.draw.rect(screen,(255,255,255),pygame.Rect(x*8,y*8,6,6),0)
-
-    # Flip the display
+    draw()
     pygame.display.flip()
+    time.sleep(0.1)
 
-# Done! Time to quit.
 pygame.quit()
+

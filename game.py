@@ -1,6 +1,7 @@
 import pygame
 import elements
 import time
+import math
 from colors import Colors
 pygame.init()
 
@@ -23,8 +24,6 @@ def update(board):
                     aliveNeighbors+=1
             except Exception as e:
                 pass
-        if aliveNeighbors > 0:
-            print(aliveNeighbors)
         if board.cells[x,y].alive == True and (aliveNeighbors < 2) or (aliveNeighbors > 3):
             nextStep.cells[x,y].alive = False
         elif board.cells[x,y].alive == True and 2<=aliveNeighbors<=3 or board.cells[x,y].alive == False and aliveNeighbors == 3:
@@ -53,16 +52,17 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     paused = not paused
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = (math.floor(pygame.mouse.get_pos()[0]/8),math.floor(pygame.mouse.get_pos()[1]/8))
+                board.cells[pos].alive = True
+                pygame.draw.rect(screen,Colors.black,pygame.Rect(pos[0]*8,pos[1]*8,8,8))
         if not paused:
-            draw(board)
             board = update(board)
-            pygame.display.flip()
             time.sleep(0.1)
         else:
             pass
-
-
-    pygame.quit()
+        draw(board)
+        pygame.display.flip()
 
 if __name__ == "__main__":
     main()

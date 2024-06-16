@@ -6,8 +6,6 @@ pygame.init()
 
 screen = pygame.display.set_mode([800, 800])
 
-
-
 def draw(board):
     screen.fill((255, 255, 255))
     for (x,y) in board.cells:
@@ -32,23 +30,9 @@ def update(board):
         elif board.cells[x,y].alive == True and 2<=aliveNeighbors<=3 or board.cells[x,y].alive == False and aliveNeighbors == 3:
             nextStep.cells[x,y].alive = True
     return nextStep
-    
-def test():
-    x = 50
-    y = 6
-    board.map[x-1 if x-1 >= 0 else board.cell_amount-1][y].alive = True
-    board.map[x+1 if x+1 < board.cell_amount else 0][y].alive = True 
-    board.map[x][y-1 if y-1 >= 0 else board.cell_amount-1].alive = True
-    board.map[x][y+1 if y+1 < board.cell_amount else 0].alive = True
-    board.map[x-1 if x-1 >= 0 else board.cell_amount-1][y-1 if y-1 >= 0 else board.cell_amount-1].alive = True
-    board.map[x+1 if x+1 <board.cell_amount else 0][y-1 if y-1 >= 0 else board.cell_amount-1].alive = True 
-    board.map[x-1 if x-1 >= 0 else board.cell_amount-1][y+1 if y+1 < board.cell_amount else 0].alive = True 
-    board.map[x+1 if x+1 < board.cell_amount else 0][y+1 if y+1 < board.cell_amount else 0].alive = True
-
 
 def main():
     board = elements.Board(8)
-
 
     board.cells[5,5].alive = True
     board.cells[5,6].alive = True
@@ -59,17 +43,24 @@ def main():
     board.cells[9,12].alive = True
     board.cells[11,12].alive = True
     board.cells[11,11].alive = True
+
+    paused = False
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
-        
-        
-        draw(board)
-        board = update(board)
-        pygame.display.flip()
-        time.sleep(0.1)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    paused = not paused
+        if not paused:
+            draw(board)
+            board = update(board)
+            pygame.display.flip()
+            time.sleep(0.1)
+        else:
+            pass
+
 
     pygame.quit()
 

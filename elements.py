@@ -3,7 +3,14 @@ class Cell:
     x = 0
     y = 0
     alive = False
+    value = 0
     size = 16
+    def getValue(self):
+        if self.alive == True:
+            self.value = 1
+        else:
+            self.value = 0
+        return int(self.value)
 
 
 class Board:
